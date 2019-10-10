@@ -15,7 +15,7 @@ const emptyEvent = {
 
 
 
-class EventForm extends Component {
+class TestimonyForm extends Component {
 
     constructor(props){
         super(props);
@@ -114,4 +114,4 @@ class EventForm extends Component {
     }
 }
 
-export default EventForm;
+export default TestimonyForm;

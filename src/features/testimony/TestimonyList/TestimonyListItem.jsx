@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Segment, Item, Icon, List, Button } from 'semantic-ui-react';
-import EventListAttendee from './EventListAttendee';
+import TestimonySocialLinks from './TestimonySocialLinks';
 
-class EventListItem extends Component {
+class TestimonyListItem extends Component {
     render() {
       const { events, onEditEvent, deleteEvent } = this.props;
         return (
@@ -31,7 +31,7 @@ class EventListItem extends Component {
                     {events.attendees && events.attendees.map((attendee) => (
 
                                                      //passing attendee as props to EventListAttendee
-                      <EventListAttendee key={attendee.id}     attendee={attendee}/>
+                      <TestimonySocialLinks key={attendee.id}     attendee={attendee}/>
 
 
                     ))}
@@ -48,4 +48,4 @@ class EventListItem extends Component {
         )
     }
 }
-export default EventListItem;
+export default TestimonyListItem;

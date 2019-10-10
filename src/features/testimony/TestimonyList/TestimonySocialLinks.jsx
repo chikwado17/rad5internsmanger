@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { List, Image } from 'semantic-ui-react';
 
-class EventListAttendee extends Component {
+class TestimonySocialLinks extends Component {
     render() {
         const { attendee } = this.props;
         return (
@@ -11,4 +11,4 @@ class EventListAttendee extends Component {
         )
     }
 }
-export default EventListAttendee;
+export default TestimonySocialLinks;

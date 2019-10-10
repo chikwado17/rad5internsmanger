@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import EventListItem from './EventListItem';
+import TestimonyListItem from './TestimonyListItem';
 
-class EventList extends Component {
+class TestimonyList extends Component {
     render() {
         const { events, onEditEvent, deleteEvent } = this.props;
         return (
             <div>
                 {events && events.map((event) => (
                               /* passing events to EventListItem */        //from eventdashboard                      
-                    <EventListItem key={event.id} events={event}  onEditEvent={onEditEvent}       deleteEvent={deleteEvent}/>
+                    <TestimonyListItem key={event.id} events={event}  onEditEvent={onEditEvent}       deleteEvent={deleteEvent}/>
                 ))}
             </div>
         )
     }
 }
 
-export default EventList;
+export default TestimonyList;

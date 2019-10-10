@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import cuid from 'cuid';
 import { Grid, Button } from 'semantic-ui-react';
-import EventList from '../EventList/EventList';
-import EventForm from '../EventForm/EventForm';
+import TestimonyList from '../TestimonyList/TestimonyList';
+import TestimonyForm from '../TestimonyForm/TestimonyForm';
 
 const eventsData = [
   {
@@ -56,7 +56,7 @@ const eventsData = [
 ]
 
 
-class EventDashboard extends Component {
+class TestimonyDashboard extends Component {
 
     constructor(props){
         super(props);
@@ -141,14 +141,14 @@ class EventDashboard extends Component {
             
             <Grid>
                 <Grid.Column width={10}>
-                    <EventList events={this.state.events}   onEditEvent={this.handleOpenEvent}   deleteEvent={this.handleDeleteEvent} />
+                    <TestimonyList events={this.state.events}   onEditEvent={this.handleOpenEvent}   deleteEvent={this.handleDeleteEvent} />
                 </Grid.Column>
                 <Grid.Column width={6}>
                     <Button onClick={this.handleFormOpen} positive content="Create Event"/>
 
                     {this.state.isOpen &&
 
-                    <EventForm updateEvent={this.handleUpdateEvent} handleFormClose={this.handleFormClose}   handleCreateEvent={this.handleCreateEvent}  selectedEvent={selectedEvent} />}
+                    <TestimonyForm updateEvent={this.handleUpdateEvent} handleFormClose={this.handleFormClose}   handleCreateEvent={this.handleCreateEvent}  selectedEvent={selectedEvent} />}
 
                 </Grid.Column>
             </Grid>
@@ -156,4 +156,4 @@ class EventDashboard extends Component {
     }
 }
 
-export default EventDashboard;
+export default TestimonyDashboard;

@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 import HomePage from '../../features/home/HomePage';
-import EventDashboard from '../../features/event/EventDashboard/EventDashboard';
-import EventDetailedPage from '../../features/event/EventDetailed/EventDetailedPage';
-import PeopleDashboard from '../../features/user/PeopleDashboard/PeopleDashboard';
+import TestimonyDashboard from '../../features/testimony/TestimonyDashboard/TestimonyDashboard';
+import TestimonyDetailedPage from '../../features/testimony/TestimonyDetailed/TestimonyDetailedPage';
 import UserDetailedPage from '../../features/user/UserDetailed/UserDetailedPage';
 import SettingsDashboard from '../../features/user/Settings/SettingsDashboard';
-import EventForm from '../../features/event/EventForm/EventForm';
+import TestimonyForm from '../../features/testimony/TestimonyForm/TestimonyForm';
 import NavBar from '../../features/nav/NavBar/NavBar';
-
-
 
 
 
@@ -29,12 +26,11 @@ class App extends Component {
               <NavBar/>
               <Container className="main">
                 <Switch>
-                    <Route path="/events" component={EventDashboard}/>
-                    <Route path="/event/:id" component={EventDetailedPage}/>
-                    <Route path="/people" component={PeopleDashboard}/>
+                    <Route path="/testimony" component={TestimonyDashboard}/>
+                    <Route path="/testimony/:id" component={TestimonyDetailedPage}/>
                     <Route path="/profile/:id" component={UserDetailedPage}/>
                     <Route path="/settings" component={SettingsDashboard}/>
-                    <Route path="/createEvent" component={EventForm}/>
+                    <Route path="/createTestimony" component={TestimonyForm}/>
                 </Switch> 
               </Container>
           </div>
