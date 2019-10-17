@@ -8,16 +8,18 @@ const HomePage = (props) => {
         <div>
             <Segment inverted textAlign='center' vertical className='masthead'>
                 <Container text>
-                  <Header as='h1' inverted>
-                    <Image
+                <center>
+                <Image
                       size='massive'
                       src='/assets/logo.png'
                       alt='logo'
-                      style={{ marginBottom: 12 }}
+                      style={{ marginBottom: 12, width:'300px' }}
                     />
-                    Re-vents
+                </center>
+                  <Header as='h1' inverted style={{fontWeight:'700'}}>
+                    INTERNS MANAGER
                   </Header>
-                  <Button onClick={() => props.history.push("/events")} size='huge' inverted>
+                  <Button onClick={() => props.history.push("/testimony")} size='huge' inverted>
                     Get started
                     <Icon name='right arrow' inverted />
                   </Button>

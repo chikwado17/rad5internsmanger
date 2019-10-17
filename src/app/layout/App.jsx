@@ -8,7 +8,8 @@ import UserDetailedPage from '../../features/user/UserDetailed/UserDetailedPage'
 import SettingsDashboard from '../../features/user/Settings/SettingsDashboard';
 import TestimonyForm from '../../features/testimony/TestimonyForm/TestimonyForm';
 import NavBar from '../../features/nav/NavBar/NavBar';
-
+import NotFoundPage from '../layout/NotFoundPage';
+import ModalManager from '../../features/modals/ModalManager';
 
 
 class App extends Component {
@@ -23,14 +24,18 @@ class App extends Component {
           path="/(.+)" 
           render={() => (
           <div> 
+         
               <NavBar/>
+              <ModalManager/>
               <Container className="main">
                 <Switch>
                     <Route path="/testimony" component={TestimonyDashboard}/>
-                    <Route path="/testimony/:id" component={TestimonyDetailedPage}/>
+                    <Route path="/testimonys/:id" component={TestimonyDetailedPage}/>
+                    <Route path="/manage/:id" component={TestimonyForm}/>
                     <Route path="/profile/:id" component={UserDetailedPage}/>
                     <Route path="/settings" component={SettingsDashboard}/>
                     <Route path="/createTestimony" component={TestimonyForm}/>
+                    <Route component={NotFoundPage}/>
                 </Switch> 
               </Container>
           </div>

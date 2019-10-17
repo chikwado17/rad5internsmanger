@@ -3,12 +3,12 @@ import TestimonyListItem from './TestimonyListItem';
 
 class TestimonyList extends Component {
     render() {
-        const { events, onEditEvent, deleteEvent } = this.props;
+        const { testimonies, onEditTestimony, deleteTestimony } = this.props;
         return (
             <div>
-                {events && events.map((event) => (
+                {testimonies && testimonies.map((testimony) => (
                               /* passing events to EventListItem */        //from eventdashboard                      
-                    <TestimonyListItem key={event.id} events={event}  onEditEvent={onEditEvent}       deleteEvent={deleteEvent}/>
+                    <TestimonyListItem key={testimony.id} testimony={testimony}  onEditTestimony={onEditTestimony} deleteTestimony={deleteTestimony}/>
                 ))}
             </div>
         )

@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 import { Segment, Item, Icon, List, Button } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import format from 'date-fns/format';
 import TestimonySocialLinks from './TestimonySocialLinks';
+
 
 class TestimonyListItem extends Component {
     render() {
-      const { events, onEditEvent, deleteEvent } = this.props;
+      const { testimony } = this.props;
         return (
              <Segment.Group>
                 <Segment>
                   <Item.Group>
                     <Item>
-                      <Item.Image size="tiny" circular src={events.hostPhotoURL} />
+                      <Item.Image size="tiny" circular src={testimony.hostPhotoURL} />
                       <Item.Content>
-                        <Item.Header as="a">{events.title}</Item.Header>
+                        <Item.Header as="a">{testimony.title}</Item.Header>
                         <Item.Description>
-                          Hosted by <a>{events.hostedBy}</a>
+                          Posted by <a>{testimony.postedBy}</a>
                         </Item.Description>
                       </Item.Content>
                     </Item>
@@ -22,27 +25,25 @@ class TestimonyListItem extends Component {
                 </Segment>
                 <Segment>
                   <span>
-                    <Icon name="clock" /> {events.date} |
-                    <Icon name="marker" /> {events.venue}
+                    <Icon name="clock" /> {format(testimony.date.toDate(), 'dddd Do MMMM')} at {format(testimony.date.toDate(), 'HH:mm')}
+                    
                   </span>
                 </Segment>
                 <Segment secondary>
                   <List horizontal>
-                    {events.attendees && events.attendees.map((attendee) => (
-
-                                                     //passing attendee as props to EventListAttendee
-                      <TestimonySocialLinks key={attendee.id}     attendee={attendee}/>
-
-
-                    ))}
+                      <TestimonySocialLinks 
+                        facebook={testimony.facebookUrl} 
+                        twitter={testimony.twitterUrl} 
+                        git={testimony.gitUrl}
+                      />
                   </List>
                 </Segment>
                 <Segment clearing>
-                    <span>{events.descript}</span>
+                    <span>{testimony.testi}</span>
 
 
-                  <Button as="a" onClick={deleteEvent(events.id)} color="red" floated="right" content="Delete" />
-                  <Button as="a" onClick={onEditEvent(events)} color="teal" floated="right" content="View" />
+              
+                  <Button as={Link} to={`/testimonys/${testimony.id}`} color="red" floated="right" content="View" />
                 </Segment>
               </Segment.Group>
         )
