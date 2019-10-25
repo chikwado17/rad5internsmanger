@@ -23,13 +23,10 @@ let render = () => {
             <BrowserRouter>
                 <ScrollToTop>
                 <ReduxToastr
-                            timeOut={4000}
-                            newestOnTop={false}
-                            preventDuplicates
-                            position="bottom-right"
-                            transitionIn="fadeIn"
-                            transitionOut="fadeOut"
-                            closeOnToastrClick/>
+                position='bottom-right'
+                transitionIn='fadeIn'
+                transitionOut='fadeOut'
+                        />
                     <App/>
                 </ScrollToTop>
             </BrowserRouter>

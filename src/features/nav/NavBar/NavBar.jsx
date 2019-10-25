@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withFirebase } from 'react-redux-firebase';
 import { Menu, Container, Button } from 'semantic-ui-react';
-import { NavLink, Link, withRouter} from 'react-router-dom';
+import { Link, withRouter} from 'react-router-dom';
 import SignedOutMenu from '../Menus/SignedOutMenu';
 import SignedInMenu from '../Menus/SignedInMenu';
 import { openModal } from '../../modals/modalActions';
@@ -45,7 +45,7 @@ class NavBar extends Component {
                 Interns Manager
               </Menu.Item>
               
-              <Menu.Item as={NavLink} to="/testimony" name="Testimonies" />
+              <Menu.Item as={Link} to="/testimony" name="Testimonies" />
 
               
               {authenticated &&

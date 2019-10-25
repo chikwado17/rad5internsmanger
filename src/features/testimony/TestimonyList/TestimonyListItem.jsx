@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Item, Icon, List, Button } from 'semantic-ui-react';
+import { Segment, Item, Icon, List, Button, Divider } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import format from 'date-fns/format';
 import TestimonySocialLinks from './TestimonySocialLinks';
@@ -41,9 +41,9 @@ class TestimonyListItem extends Component {
                 <Segment clearing>
                     <span>{testimony.testi}</span>
 
-
+                    <Divider horizontal><Icon name="edit" /> </Divider>
               
-                  <Button as={Link} to={`/testimonys/${testimony.id}`} color="red" floated="right" content="View" />
+                  <Button as={Link} to={`/testimonies/${testimony.id}`} color="red" floated="right" content="View" />
                 </Segment>
               </Segment.Group>
         )

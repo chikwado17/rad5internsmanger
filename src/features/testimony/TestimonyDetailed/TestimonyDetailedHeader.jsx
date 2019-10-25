@@ -1,7 +1,7 @@
 import React from 'react';
 import { Segment, Item, Button, Image, Header } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-
+import format from 'date-fns/format';
 
 
 const eventImageStyle = {
@@ -18,7 +18,14 @@ const eventImageTextStyle = {
 };
 
 
-const TestimonyDetailedHeader = ( { testimony } ) => {
+const TestimonyDetailedHeader = ({ testimony }) => {
+
+ let testimonyDate;
+  if(testimony.date) {
+    testimonyDate = testimony.date.toDate();
+  }
+   
+
     return (
        
    <Segment.Group>
@@ -34,9 +41,10 @@ const TestimonyDetailedHeader = ( { testimony } ) => {
                content={testimony.title}
                style={{ color: 'white' }}
              />
-             <p>{testimony.date}</p>
+          
+             <p>{format(testimonyDate, 'dddd Do MMMM')}</p>
              <p>
-               Hosted by <strong>{testimony.postedBy}</strong>
+               Posted by <strong>{testimony.postedBy}</strong>
              </p>
            </Item.Content>
          </Item>

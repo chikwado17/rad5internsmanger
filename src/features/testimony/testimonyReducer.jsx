@@ -1,33 +1,33 @@
 
 
 const initialState  = [
-    {
-      id: '1',
-      title: 'Learnt CSS In Two Weeks',
-      date: '2018-03-27',
-      category: 'culture',
-      testi:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
-      postedBy: 'chikwado',
-      hostPhotoURL: 'https://scontent.fphc1-1.fna.fbcdn.net/v/t1.0-9/69410055_2468757096704388_3905778722803810304_n.jpg?_nc_cat=108&_nc_oc=AQkzvItBaIsz3pd-EINRTE8LB9JjmHOGo-ALjJKuq26f7TzrhPkFYlLkfhvbUPJBxYY&_nc_ht=scontent.fphc1-1.fna&oh=eeb7c9821b965960388db4a9b38cdcd2&oe=5E2370E6',
-      facebookUrl:'https://www.facebook.com/chikwado.okoye.52',
-      twitterUrl: 'https://twitter.com/ChikwadoOkoye1',
-      gitUrl:'https://github.com/chikwado17'
-    },
-    {
-      id: '2',
-      title: 'How I Learnt Redux',
-      date: '2018-03-28',
-      category: 'drinks',
-      testi:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
-      postedBy: 'Emmanuel',
-      hostPhotoURL: 'https://scontent.fphc1-1.fna.fbcdn.net/v/t1.0-9/69410055_2468757096704388_3905778722803810304_n.jpg?_nc_cat=108&_nc_oc=AQkzvItBaIsz3pd-EINRTE8LB9JjmHOGo-ALjJKuq26f7TzrhPkFYlLkfhvbUPJBxYY&_nc_ht=scontent.fphc1-1.fna&oh=eeb7c9821b965960388db4a9b38cdcd2&oe=5E2370E6',
-      facebookUrl:'https://www.facebook.com/chikwado.okoye.52',
-      twitterUrl: 'https://twitter.com/ChikwadoOkoye1',
-      gitUrl:'https://github.com/chikwado17'
-    }
-  ]
+
+  {
+    id: '1',
+    title: 'Trip to Tower of London',
+    date: '2018-03-27',
+    category: 'culture',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
+    city: 'London, UK',
+    venue: "Tower of London, St Katharine's & Wapping, London",
+    postedBy: 'Bob',
+    hostPhotoURL: 'https://randomuser.me/api/portraits/men/20.jpg',
+    attendees: [
+      {
+        id: 'a',
+        name: 'Bob',
+        photoURL: 'https://randomuser.me/api/portraits/men/20.jpg'
+      },
+      {
+        id: 'b',
+        name: 'Tom',
+        photoURL: 'https://randomuser.me/api/portraits/men/22.jpg'
+      }
+    ]
+  }
+ 
+];
   
 
   export const testimonyReducer = (state = initialState, action) => {

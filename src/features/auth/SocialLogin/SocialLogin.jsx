@@ -4,7 +4,7 @@ import {Button, Icon } from 'semantic-ui-react';
 const SocialLogin = ({ socialLogin }) => {
     return (
         <div> 
-           <Button style={{ marginBottom: '10px' }} onClick={()=> socialLogin('github')} type="button" fluid color="black">
+           <Button style={{ marginBottom: '10px' }} onClick={()=> socialLogin('github')} type="button" fluid color="brown">
             <Icon name="github" />
             Login with Github
             </Button>

@@ -29,8 +29,8 @@ class App extends Component {
               <ModalManager/>
               <Container className="main">
                 <Switch>
-                    <Route path="/testimony" component={TestimonyDashboard}/>
-                    <Route path="/testimonys/:id" component={TestimonyDetailedPage}/>
+                    <Route path="/testimony" exact={true} component={TestimonyDashboard}/>
+                    <Route path="/testimonies/:id" component={TestimonyDetailedPage}/>
                     <Route path="/manage/:id" component={TestimonyForm}/>
                     <Route path="/profile/:id" component={UserDetailedPage}/>
                     <Route path="/settings" component={SettingsDashboard}/>
