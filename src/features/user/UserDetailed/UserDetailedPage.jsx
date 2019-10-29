@@ -1,40 +1,54 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
-import { Card, Grid, Header, Icon, Image, Item, List, Segment} from "semantic-ui-react";
+import { firestoreConnect, isEmpty } from 'react-redux-firebase';
+import { UserDetailedQueries } from '../userDetailedQueries';
+import {  Grid, Header, Icon, Image, Item, List, Segment} from "semantic-ui-react";
 import differenceInYears from 'date-fns/difference_in_years';
 import format from 'date-fns/format';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faFacebook,faTwitter,faGithub } from "@fortawesome/free-brands-svg-icons";
 import LazyLoad from 'react-lazyload';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
 
 
-const query = ({ auth }) => {
-    return [
-        {
-            collection: 'users',
-            doc:auth.uid,
-            subcollections: [{collection: 'photos'}],
-            storeAs: 'photos'  
-        }
-    ]
-}
 
-const mapStateToProps = (state) => ({
-    profile: state.firebase.profile,
+const mapStateToProps = (state, ownProps) => {
+
+    //getting access to users profile that is not current user
+    let userUid = null;
+    let profile = {};
+
+    if(ownProps.match.params.id === state.auth.uid) {
+        profile = state.firebase.profile
+    }else {
+        //where all the users profiles is been stored.
+        profile = !isEmpty(state.firestore.ordered.profile) && state.firestore.ordered.profile[0];
+        userUid = ownProps.match.params.id;
+    }
+
+   return {
+    profile,
+    userUid,
     auth: state.firebase.auth,
-    photos: state.firestore.ordered.photos
-});
+    photos: state.firestore.ordered.photos,
+    requesting: state.firestore.status.requesting
+   }
+};
 
 
 class UserDetailedPage extends Component {
 
     render() {
 
-        const { profile, photos} = this.props;
+        const { profile, photos, requesting } = this.props;
 
 
+        const loading = Object.values(requesting).some(a => a === true);
+        if (loading) return <LoadingComponent inverted={true} />;
+
+
+        /////
         let age;
         if(profile.dateOfBirth){
             age = differenceInYears(Date.now(), profile.dateOfBirth.toDate());
@@ -131,42 +145,7 @@ class UserDetailedPage extends Component {
                       
                       
                     </Segment>
-                </Grid.Column>
-
-                <Grid.Column width={16}>
-                    <Segment attached>
-                        <Header icon='calendar' content='My Testimonies'/>
-                        
-
-                        <Card.Group itemsPerRow={5}>
-
-                            <Card>
-                                <Image src={'/assets/categoryImages/drinks.jpg'}/>
-                                <Card.Content>
-                                    <Card.Header textAlign='center'>
-                                        Event Title
-                                    </Card.Header>
-                                    <Card.Meta textAlign='center'>
-                                        28th March 2018 at 10:00 PM
-                                    </Card.Meta>
-                                </Card.Content>
-                            </Card>
-
-                            <Card>
-                                <Image src={'/assets/categoryImages/drinks.jpg'}/>
-                                <Card.Content>
-                                    <Card.Header textAlign='center'>
-                                        Event Title
-                                    </Card.Header>
-                                    <Card.Meta textAlign='center'>
-                                        28th March 2018 at 10:00 PM
-                                    </Card.Meta>
-                                </Card.Content>
-                            </Card>
-
-                        </Card.Group>
-                    </Segment>
-                </Grid.Column>
+                </Grid.Column> 
             </Grid>
 
         );
@@ -175,5 +154,5 @@ class UserDetailedPage extends Component {
 
 export default compose(
     connect(mapStateToProps),
-    firestoreConnect(auth => query((auth)))
+    firestoreConnect((auth, userUid) => UserDetailedQueries(auth, userUid))
 )(UserDetailedPage);

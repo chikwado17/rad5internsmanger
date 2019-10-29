@@ -1,97 +1,112 @@
-import React from 'react';
-import { Segment, Header, Comment, Form, Button } from 'semantic-ui-react';
+import React, { Component } from 'react'
+import { Segment, Header, Comment } from 'semantic-ui-react';
+import EventDetailedChatForm from './EventDetailedChatForm';
+import { Link } from 'react-router-dom';
+import distanceInWords from 'date-fns/distance_in_words';
 
-const TestimonyDetailedChat = () => {
+
+class TestimonyDetailedChat extends Component {
+
+  state = {
+    showReplyForm: false,
+    selectedComment: null
+  }
+
+  handleReplyForm = (id) => () => {
+    this.setState({
+      showReplyForm: true,
+      selectedComment: id
+    })
+  }
+
+  handleCloseReplyForm = () => {
+    this.setState({
+      selectedComment:null,
+      showReplyForm:false
+    })
+  }
+
+  render() {
+    const { testimonyChat, addTestimonyComment, testimonyId  } = this.props;
+    const { showReplyForm, selectedComment } = this.state;
     return (
-            <div>
-              <Segment
-                textAlign="center"
-                attached="top"
-                inverted
-                className="comment_background-color"
-                style={{ border: 'none' }}
-              >
-                <Header>Comment on Testimony</Header>
-              </Segment>
+      <div>
+          <Segment
+              textAlign="center"
+              attached="top"
+              inverted
+              color="teal"
+              style={{ border: 'none' }}
+            >
+              <Header>Comment on this Testimony</Header>
+            </Segment>
         
               <Segment attached>
                 <Comment.Group>
-                  <Comment>
-                    <Comment.Avatar src="/assets/user.png" />
-                    <Comment.Content>
-                      <Comment.Author as="a">Matt</Comment.Author>
-                      <Comment.Metadata>
-                        <div>Today at 5:42PM</div>
-                      </Comment.Metadata>
-                      <Comment.Text>How artistic!</Comment.Text>
-                      <Comment.Actions>
-                        <Comment.Action>Reply</Comment.Action>
-                      </Comment.Actions>
-                    </Comment.Content>
-                  </Comment>
-        
-                  <Comment>
-                    <Comment.Avatar src="/assets/user.png" />
-                    <Comment.Content>
-                      <Comment.Author as="a">Elliot Fu</Comment.Author>
-                      <Comment.Metadata>
-                        <div>Yesterday at 12:30AM</div>
-                      </Comment.Metadata>
-                      <Comment.Text>
-                        <p>
-                          This has been very useful for my research. Thanks as well!
-                        </p>
-                      </Comment.Text>
-                      <Comment.Actions>
-                        <Comment.Action>Reply</Comment.Action>
-                      </Comment.Actions>
-                    </Comment.Content>
-                    <Comment.Group>
-                      <Comment>
-                        <Comment.Avatar src="/assets/user.png" />
-                        <Comment.Content>
-                          <Comment.Author as="a">Jenny Hess</Comment.Author>
-                          <Comment.Metadata>
-                            <div>Just now</div>
-                          </Comment.Metadata>
-                          <Comment.Text>Elliot you are always so right :)</Comment.Text>
-                          <Comment.Actions>
-                            <Comment.Action>Reply</Comment.Action>
-                          </Comment.Actions><div>
-            
-            </div>
-                        </Comment.Content>
-                      </Comment>
-                    </Comment.Group>
-                  </Comment>
-        
-                  <Comment>
-                    <Comment.Avatar src="/assets/user.png" />
-                    <Comment.Content>
-                      <Comment.Author as="a">Joe Henderson</Comment.Author>
-                      <Comment.Metadata>
-                        <div>5 days ago</div>
-                      </Comment.Metadata>
-                      <Comment.Text>Dude, this is awesome. Thanks so much</Comment.Text>
-                      <Comment.Actions>
-                        <Comment.Action>Reply</Comment.Action>
-                      </Comment.Actions>
-                    </Comment.Content>
-                  </Comment>
-        
-                  <Form reply>
-                    <Form.TextArea />
-                    <Button
-                      content="Add Reply"
-                      labelPosition="left"
-                      icon="edit"
-                      primary
-                    />
-                  </Form>
-                </Comment.Group>
-              </Segment>
-            </div>
-    )
-}
+                  {testimonyChat && testimonyChat.map((comment) => (
+                    <Comment key={comment.id}>
+                      <Comment.Avatar src={comment.photoURL || "/assets/user.png"} />
+                      <Comment.Content>
+                        <Comment.Author as={Link} to={`/profile/${comment.uid}`}>{comment.displayName}</Comment.Author>
+                        <Comment.Metadata>
+                          <div>{distanceInWords(comment.date, Date.now())} ago</div>
+                        </Comment.Metadata>
+                        <Comment.Text>{comment.text}</Comment.Text>
+                        <Comment.Actions>
+                          <Comment.Action onClick={this.handleReplyForm(comment.id)}>Reply</Comment.Action>
+                          {showReplyForm && selectedComment === comment.id &&
+                            <EventDetailedChatForm 
+                            form={`reply_${comment.id}`} 
+                            addEventComment={addTestimonyComment} 
+                            eventId={testimonyId}
+                            closeForm={this.handleCloseReplyForm}
+                            parentId={comment.id}
+                            />
+                          }
+                        </Comment.Actions>
+                      </Comment.Content> 
 
+
+                        {/* for chat reply */}
+                        <Comment.Group>
+                          {comment.childNodes && comment.childNodes.map((child)=> (
+                            <Comment key={child.id}>
+                              <Comment.Avatar src={child.photoURL || "/assets/user.png"} />
+                                <Comment.Content>
+                                  <Comment.Author as={Link} to={`/profile/${child.uid}`}>{child.displayName}</Comment.Author>
+                                  <Comment.Metadata>
+                                    <div>{distanceInWords(child.date, Date.now())} ago</div>
+                                  </Comment.Metadata>
+                                  <Comment.Text>{child.text}</Comment.Text>
+                                  <Comment.Actions>
+                                    <Comment.Action onClick={this.handleReplyForm(child.id)}>Reply</Comment.Action>
+                                    {showReplyForm && selectedComment === child.id &&
+                                      <EventDetailedChatForm 
+                                      form={`reply_${child.id}`} 
+                                      addEventComment={addTestimonyComment} 
+                                      eventId={testimonyId}
+                                      closeForm={this.handleCloseReplyForm}
+                                      parentId={child.parentId}
+                                      />
+                                    }
+                                  </Comment.Actions>
+                                </Comment.Content>  
+                                               
+                              </Comment>
+                          ))}
+                            
+
+                            
+                        </Comment.Group>    
+
+                                   
+                    </Comment>
+                  ))}
+                </Comment.Group> 
+                <EventDetailedChatForm parentId={0} form={`newComment`} addEventComment={addTestimonyComment} eventId={testimonyId}/>
+              </Segment>
+      </div>
+    )
+  }
+}
 export default TestimonyDetailedChat;

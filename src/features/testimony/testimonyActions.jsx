@@ -1,8 +1,8 @@
 import { toastr } from 'react-redux-toastr';
-// // import { asyncActionStart, asyncActionFinish, asyncActionError } from '../async/asyncActions';
+import { asyncActionStart, asyncActionFinish, asyncActionError } from '../async/asyncActions';
 import { createNewTestimony} from '../../app/common/utils/helpers';
 import moment from 'moment';
-// import firebase from '../../app/config/firebase.js';
+import firebase from '../../app/config/firebase.js';
 // import compareAsc from 'date-fns/compare_asc';
 
 
@@ -23,21 +23,6 @@ export const createTestimony = (testimony) => {
         }
     }
 };
-
-
-// export const createTestimony = (testimony) => ({
-//     type: 'CREATE_TESTIMONY',
-//     testimony
-// });
-
-
-
-// export const updateTestimony = (testimony) => ({
-//     type: 'UPDATE_TESTIMONY',
-//     testimony
-// });
-
-
 
 export const deleteTestimony = (testimonyId) => ({
     type: 'DELETE_TESTIMONY',
@@ -60,8 +45,87 @@ export const updateTestimony = (testimony) => {
           
        }catch(error){
         
-            toastr.error("Opps!!!", "Error occured updating testimony");
+            toastr.errofirebase("Opps!!!", "Error occured updating testimony");
         }
    }
 }
 
+
+
+//for filtering
+export const getTestimonyDashboard = (lastTestimony) => {
+    return async (dispatch, getState) => {
+       
+        // let today = new Date(Date.now());
+        const firestore = firebase.firestore();
+        const testimonyRef = firestore.collection('testimonies');
+       
+        try {
+            dispatch(asyncActionStart());
+            let startAfter = lastTestimony && await firestore.collection('testimonies').doc(lastTestimony.id).get();
+            let query;
+
+            lastTestimony ? query = testimonyRef
+            // .where('date', '>=', today)
+            .orderBy('date').startAfter(startAfter)
+            .limit(2)
+
+            : query = testimonyRef
+            // .where('date', '>=', today)
+            .orderBy('date').limit(2)
+
+            let querySnap = await query.get();
+     
+                if(querySnap.docs.length === 0) {
+                    dispatch(asyncActionFinish());
+                    return querySnap;
+                }
+
+            let testimony = [];
+
+            for(let i = 0; i < querySnap.docs.length; i++) {
+                let tst = {...querySnap.docs[i].data(), id: querySnap.docs[i].id};
+                testimony.push(tst);
+            }
+
+            dispatch({
+                type: "FETCH_TESTIMONY",
+                testimony
+            })
+            dispatch(asyncActionFinish())
+
+            return querySnap;
+        }catch(error){
+            console.log(error);
+            dispatch(asyncActionError());
+        }
+    }
+}
+
+
+//for chat/comment
+//adding comment/chat to firebase
+export const addTestimonyComment = (testimonyId, values, parentId) => {
+    return async (dispatch, getState, {getFirebase}) => {
+        const firebase = getFirebase();
+        // getting logged in user profile
+        const profile = getState().firebase.profile;
+        //getting current logged in user id.
+        const user = firebase.auth().currentUser;
+
+        let newComment = {
+            parentId:parentId,
+            displayName:profile.displayName,
+            photoURL: profile.photoURL || 'assets/user.png',
+            uid:user.uid,
+            text:values.comment,
+            date: Date.now()
+        }
+        try{
+            await firebase.push(`testimony_chat/${testimonyId}`, newComment);
+        }catch(error){
+            console.log(error);
+            toastr.error('Oops!', 'Error sending comment');
+        }
+    }
+}

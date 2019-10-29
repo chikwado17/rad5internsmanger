@@ -1,23 +1,36 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Segment, Item, Icon, List, Button, Divider } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import format from 'date-fns/format';
 import TestimonySocialLinks from './TestimonySocialLinks';
 
 
+
+
+const mapStateToProps = (state) => ({
+  auth: state.firebase.auth
+})
+
+
+
+
 class TestimonyListItem extends Component {
+
+
     render() {
-      const { testimony } = this.props;
+      const { testimony, auth } = this.props;
+       
         return (
              <Segment.Group>
                 <Segment>
                   <Item.Group>
                     <Item>
-                      <Item.Image size="tiny" circular src={testimony.hostPhotoURL} />
+                      <Item.Image size="tiny" as={Link} to={`/profile/${auth.uid}`} circular src={testimony.hostPhotoURL} />
                       <Item.Content>
-                        <Item.Header as="a">{testimony.title}</Item.Header>
+                        <Item.Header as={Link} to={`/testimonies/${testimony.id}`}>{testimony.title}</Item.Header>
                         <Item.Description>
-                          Posted by <a>{testimony.postedBy}</a>
+                          Posted by <Link  to={`/profile/${testimony.hostUid}`}>{testimony.postedBy}</Link>
                         </Item.Description>
                       </Item.Content>
                     </Item>
@@ -49,4 +62,4 @@ class TestimonyListItem extends Component {
         )
     }
 }
-export default TestimonyListItem;
+export default connect(mapStateToProps)(TestimonyListItem);
