@@ -7,9 +7,24 @@ import TestimonyActivity from '../TestimonyActivity/TestimonyActivity';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { getTestimonyDashboard } from '../testimonyActions';
 
+
+
+//query firestore to get activity collection
+//remember to pass the query down to firestoreconnect on footer code
+const query = [
+    {
+        collection: 'activity',
+        orderBy: ['timestamp', 'desc'],
+        limit:5
+    }
+]
+
+
+
 const mapStateToProps = (state) => ({
   testimony:state.testimony,
-  loading: state.async.loading
+  loading: state.async.loading,
+  activities: state.firestore.ordered.activity
 
 });
 
@@ -22,7 +37,8 @@ class TestimonyDashboard extends Component {
     state = {
         moreTestimonies: false,
         loadingInitial: true,
-        loadedTestimonies: []
+        loadedTestimonies: [],
+        contextRef: {}
     }
 
    async componentDidMount() {
@@ -58,22 +74,32 @@ class TestimonyDashboard extends Component {
     }
 
 
+     //handling contextref for sticky sementic react
+    //remember pass down to eventactivity
+    handleContextRef = (contextRef) => {
+        this.setState({ contextRef })
+    }
+
+
     render() {
-        const { loading } = this.props;
+        const { loading, activities } = this.props;
         const { moreTestimonies, loadedTestimonies } = this.state;
         if (this.state.loadingInitial) return <LoadingComponent inverted={true} />;
         return (
             
             <Grid>
                 <Grid.Column width={10}>
-                    <TestimonyList testimonies={loadedTestimonies}
-                        loading={loading}
-                        moreTestimonies={moreTestimonies}
-                        getNextTestimony={this.getNextTestimony}
-                     />
+                   <div ref={this.handleContextRef}>
+                    <TestimonyList 
+                            testimonies={loadedTestimonies}
+                            loading={loading}
+                            moreTestimonies={moreTestimonies}
+                            getNextTestimony={this.getNextTestimony}
+                        />
+                   </div>
                 </Grid.Column>
                 <Grid.Column width={6}>
-                    <TestimonyActivity/>
+                    <TestimonyActivity activities={activities}  contextRef={this.state.contextRef} />
                 </Grid.Column>
                 <Grid.Column width={10}>
 
@@ -87,5 +113,5 @@ class TestimonyDashboard extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-    firestoreConnect([{ collection: 'testimonies' }])(TestimonyDashboard)
+    firestoreConnect(query)(TestimonyDashboard)
 );

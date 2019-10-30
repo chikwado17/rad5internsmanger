@@ -14,7 +14,7 @@ class UnauthModal extends Component {
 
 
     handleCloseModal = () => {
-        if(this.props.location.pathname.includes('/event')) {
+        if(this.props.location.pathname.includes('/testimony')) {
             this.props.closeModal();
         }else{
             this.props.history.goBack();
@@ -31,15 +31,15 @@ class UnauthModal extends Component {
                 onClose={this.handleCloseModal}
             >
                 <Modal.Header>
-                    You need to be signed in to do that!
+                    Please Sign In!!!
                 </Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
                         <p>Please either login or register to see this page</p>
                         <Button.Group widths={4}>
-                            <Button fluid color='teal' onClick={() => openModal("LoginModal")}>Login</Button>
+                            <Button fluid color='blue' onClick={() => openModal("LoginModal")}>Login</Button>
                             <Button.Or />
-                            <Button fluid positive onClick={() => openModal("RegisterModal")}>Register</Button>
+                            <Button fluid color="red" onClick={() => openModal("RegisterModal")}>Register</Button>
                         </Button.Group>
                         <Divider/>
                         <div style={{textAlign: 'center'}}>

@@ -15,8 +15,16 @@ export const createTestimony = (testimony) => {
         const twitterUrl = getState().firebase.profile.twitterUrl;
         const gitUrl = getState().firebase.profile.gitUrl;
         let newTestimony = createNewTestimony(user, photoURL, testimony, facebookUrl ,twitterUrl, gitUrl);
+
         try {
-            await firestore.add(`testimonies`, newTestimony);
+          let createdTestimony = await firestore.add(`testimonies`, newTestimony);
+
+            await firestore.set(`testimonys/${createdTestimony.id}_${user.uid}`, {
+                testimonyId: createdTestimony.id,
+                userUid:user.uid,
+                eventDate:testimony.date,
+                host:true
+            })
             toastr.success('success', 'Testimony has been created');
         }catch(error){
             toastr.error('Oops!', 'Unable to add testimony');

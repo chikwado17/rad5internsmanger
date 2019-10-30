@@ -52,7 +52,7 @@ class TestimonyListItem extends Component {
                   </List>
                 </Segment>
                 <Segment clearing>
-                    <span>{testimony.testi}</span>
+                    <p style={{lineHeight: '1.9', textAlign: 'justify'}}>{testimony.testi}</p>
 
                     <Divider horizontal><Icon name="edit" /> </Divider>
               

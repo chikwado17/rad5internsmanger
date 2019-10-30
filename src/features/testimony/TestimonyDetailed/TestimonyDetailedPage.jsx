@@ -9,7 +9,7 @@ import TestimonyDetailedInfo from './TestimonyDetailedInfo';
 import TestimonyDetailedChat from './TestimonyDetailedChat';
 import { addTestimonyComment } from '../testimonyActions';
 import { createDataTree, objectToArray } from '../../../app/common/utils/helpers';
-import LoadingComponent from '../../../app/layout/LoadingComponent';
+// import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { openModal } from '../../modals/modalActions';
 
 
@@ -69,13 +69,13 @@ class TestimonyDetailedPage extends Component {
 
 
     render() { 
-        const {openModal, testimony, testimonyChat, match, loading, auth, addTestimonyComment, requesting  } = this.props;
+        const {openModal, auth, testimony, testimonyChat, loading,  addTestimonyComment } = this.props;
 
 
           //sorting event chat to have its own reply assigned to it
           const chatTree = !isEmpty(testimonyChat) && createDataTree(testimonyChat);
   //         //for anonimouse users
-  //         const authenticated = auth.isLoaded && !auth.isEmpty;
+          const authenticated = auth.isLoaded && !auth.isEmpty;
   //         //for loading indicator
           // const Loadingflag = requesting[`testimonies/${match.params.id}`];
           // if (Loadingflag || this.state.initialLoading) return <LoadingComponent inverted={true} />
@@ -87,17 +87,17 @@ class TestimonyDetailedPage extends Component {
                <TestimonyDetailedHeader
                loading={loading}
                 testimony={testimony} 
-                // authenticated={authenticated}
+                authenticated={authenticated}
                 openModal={openModal}
                 />   
                <TestimonyDetailedInfo testimony={testimony}  />
 
-               {/* {authenticated && */}
+               {authenticated &&
                <TestimonyDetailedChat 
                   addTestimonyComment={addTestimonyComment}
                   testimonyId={testimony.id}
                   testimonyChat={chatTree}
-               />
+               />}
 
 
             </Grid.Column>

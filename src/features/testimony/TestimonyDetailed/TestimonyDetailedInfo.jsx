@@ -7,10 +7,10 @@ const TestimonyDetailedInfo = ({testimony}) => {
         <Segment attached="top">
           <Grid>
             <Grid.Column width={1}>
-              <Icon size="large" color="teal" name="info" />
+              <Icon size="large" color="blue" name="info" />
             </Grid.Column>
             <Grid.Column width={15}>
-              <p>{testimony.testi}</p>
+              <p style={{padding: '2px', margin: '10px', lineHeight: '1.9', textAlign: 'justify'}}>{testimony.testi}</p>
             </Grid.Column>
           </Grid>
         </Segment>

@@ -1,14 +1,21 @@
 import React from 'react';
-import {Header, Segment } from 'semantic-ui-react';
+import {Header, Segment, Feed, Sticky } from 'semantic-ui-react';
+import TestmonyActivityItem from './TestmonyActivityItem';
 
-const TestimonyActivity = () => {
+
+
+const TestimonyActivity = ({activities, contextRef}) => {
     return (
-        <div>
+        <Sticky  context={contextRef} offset={100}>
             <Header attached='top' content="Recent Activity"/>
             <Segment attached>
-                Recent Activity
+              <Feed>
+              {activities && activities.map(activity => (
+                  <TestmonyActivityItem  key={activity.id} activity={activity}/>
+              ))}
+              </Feed>
             </Segment>
-        </div>  
+        </Sticky>  
     )
 }
 

@@ -22,7 +22,15 @@ export const createNewTestimony = (user, photoURL, testimony, facebookUrl, twitt
         hostPhotoURL:photoURL || 'assets/user.png',
         facebookUrl:facebookUrl || "",
         twitterUrl: twitterUrl || "",
-        gitUrl: gitUrl || ""
+        gitUrl: gitUrl || "",
+        testimonies: {
+            [user.uid]: {
+                postDate: Date.now(),
+                photoURL:photoURL ||  'assets/user.png',
+                displayName:user.displayName,
+                host:true
+            }
+        }
     }
 }
 

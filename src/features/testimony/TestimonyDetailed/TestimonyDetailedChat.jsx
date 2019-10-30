@@ -35,7 +35,7 @@ class TestimonyDetailedChat extends Component {
               textAlign="center"
               attached="top"
               inverted
-              color="teal"
+              color="blue"
               style={{ border: 'none' }}
             >
               <Header>Comment on this Testimony</Header>

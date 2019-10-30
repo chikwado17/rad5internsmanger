@@ -55,7 +55,7 @@ const TestimonyDetailedHeader = ({ testimony }) => {
    <Segment attached="bottom">
     
      <Button as={Link} to={`/manage/${testimony.id}`} color="red">
-       Manage Event
+       Edit Testimony
      </Button>
    </Segment>
  </Segment.Group>

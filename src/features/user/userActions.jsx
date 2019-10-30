@@ -2,7 +2,7 @@ import moment from 'moment';
 import cuid from 'cuid';
 import {toastr} from 'react-redux-toastr';
 import { asyncActionStart, asyncActionFinish, asyncActionError } from '../async/asyncActions';
-
+import firebase from 'firebase';
 
 
 
@@ -107,82 +107,49 @@ export const deletePhoto = (photo) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-//action to set main profile photo
-export const setMainPhoto = (photo) => {
-    return async (dispatch, getState, {getFirebase}) => {
-        const firebase = getFirebase();
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+//action to set main profile photo 
+//with firebase data consistency
+export const setMainPhoto = (photo) => {
+    return async (dispatch, getState ) => {
+        dispatch(asyncActionStart());
+        const firestore = firebase.firestore();
+        const user = firebase.auth().currentUser;
+        let userDocRef = firestore.collection('users').doc(user.uid);
+        let eventAttendeeRef = firestore.collection('testimonys');
         try {
-            return await firebase.updateProfile({
-                photoURL:photo.url
-            })
+           let batch = firestore.batch();
+           await batch.update(userDocRef, {
+                photoURL: photo.url
+           });
+
+           let eventQuery = await eventAttendeeRef.where('userUid', '==', user.uid)
+            .orderBy('eventDate');
+
+           let eventQuerySnap = await eventQuery.get();
+
+           for(let i = 0; i < eventQuerySnap.docs.length; i++){
+               let eventDocRef = await firestore.collection('testimonies').doc(eventQuerySnap.docs[i].data().testimonyId);
+
+               //checking if the user is hosting this particular event then update the hostPhotoURL
+               let event = await eventDocRef.get();
+
+               if(event.data().hostUid === user.uid){
+                   batch.update(eventDocRef, {
+                       hostPhotoURL: photo.url          
+                   })
+                }
+
+        }
+
+        await batch.commit();
+        dispatch(asyncActionFinish());
         }catch(error){
             console.log(error);
+            dispatch(asyncActionError());
             throw new Error('Prolem setting main photo')
         }
     }
 }
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-// //action to set main profile photo 
-// //with firebase data consistency
-// export const setMainPhoto = (photo) => {
-//     return async (dispatch, getState ) => {
-//         dispatch(asyncActionStart());
-//         const firestore = firebase.firestore();
-//         const today = new Date(Date.now());
-//         const user = firebase.auth().currentUser;
-
-//         //getting user document which is user data's
-//         let userDocRef = firestore.collection('users').doc(user.uid);
-//         //getting the event attendee collection
-//         let eventAttendeeRef = firestore.collection('event_attendee');
-
-
-//         try {
-//             //batch for data consistency
-//            let batch = firestore.batch();
-//            //updating the user doc photourl
-//            await batch.update(userDocRef, {
-//                 photoURL: photo.url
-
-//            });
-
-//            let eventQuery = await eventAttendeeRef.where('userUid', '==', user.uid)
-//                 .where('eventDate', '>', today);
-
-//             //getting the exact data of the eventQuery and loop through them
-//            let eventQuerySnap = await eventQuery.get();
-
-//            for(let i = 0; i < eventQuerySnap.docs.length; i++){
-//                let eventDocRef = await firestore.collection('events').doc(eventQuerySnap.docs[i].data().eventId);
-
-//                //checking if the user is hosting this particular event then update the hostPhotoURL
-//                let event = await eventDocRef.get();
-// //checking if the user is hosting this particular event then update the hostPhotoURL
-//                if(event.data().hostUid === user.uid){
-//                    batch.update(eventDocRef, {
-//                        hostPhotoURL: photo.url,
-//                        //and also update the attendees photo
-//                        [`attendees.${user.uid}.photoURL`]: photo.url
-//                    })
-//                }else {
-//                 batch.update(eventDocRef, {
-                   
-//                     [`attendees.${user.uid}.photoURL`]: photo.url
-//                })
-//            }
-
-//         }
-
-//         await batch.commit();
-//         dispatch(asyncActionFinish());
-//         }catch(error){
-//             console.log(error);
-//             dispatch(asyncActionError());
-//             throw new Error('Prolem setting main photo')
-//         }
-//     }
-// }

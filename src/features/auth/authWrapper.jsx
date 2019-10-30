@@ -4,7 +4,7 @@ import { openModal } from '../modals/modalActions';
 export const UserIsAuthenticated = connectedReduxRedirect({
     wrapperDispayName: 'UserIsAuthenticated',
     allowRedirectBack: true,
-    redirectPath: '/events',
+    redirectPath: '/testimony',
     authenticatedSelector: ({ firebase: { auth } }) => 
     
     auth.isLoaded && !auth.isEmpty,
