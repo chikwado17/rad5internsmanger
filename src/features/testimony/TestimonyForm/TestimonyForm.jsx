@@ -4,7 +4,7 @@ import { withFirestore } from 'react-redux-firebase';
 import { reduxForm, Field} from 'redux-form';
 import { combineValidators, composeValidators, isRequired, hasLengthGreaterThan } from 'revalidate';
 import { Grid, Header, Segment, Form , Button } from 'semantic-ui-react';
-import { createTestimony, updateTestimony  } from '../testimonyActions';
+import { createTestimony, updateTestimony, deleteTestimony  } from '../testimonyActions';
 import TextInput from '../../../app/common/form/TextInput';
 import TextArea from '../../../app/common/form/TextArea';
 import DateInput from '../../../app/common/form/DateInput';
@@ -12,7 +12,8 @@ import DateInput from '../../../app/common/form/DateInput';
 
 const mapDispatchToProps = {
   createTestimony,
-  updateTestimony
+  updateTestimony,
+  deleteTestimony
 }
 
 
@@ -33,7 +34,9 @@ const mapStateToProps = (state) => {
     testimony = state.firestore.ordered.testimonies[0];
   }
   return {
-   initialValues: testimony
+   initialValues: testimony,
+   testimony,
+   loading: state.async.loading
   }
 
 }
@@ -42,17 +45,31 @@ class TestimonyForm extends Component {
 
 
     onFormSubmit = async (values) => {
+     
+      
         if(this.props.initialValues.id){
          await this.props.updateTestimony(values);
+     
          this.props.history.push('/testimony');
        
         }else{
      
           this.props.createTestimony(values);
+     
           this.props.history.push('/testimony');
 
         }        
     }
+
+    handleDeleteEvent = (testimonyId) => () => {
+    
+  
+      this.props.deleteTestimony(testimonyId);
+ 
+      this.props.history.push('/testimony');
+    }
+
+
 
 
     async componentDidMount() {
@@ -69,7 +86,7 @@ class TestimonyForm extends Component {
   
 
     render() {
-      const { invalid, submitting, pristine, handleSubmit } = this.props;
+      const { invalid, submitting, pristine, handleSubmit, testimony } = this.props;
         return (
           <Grid>
             <Grid.Column width={10}>
@@ -80,9 +97,16 @@ class TestimonyForm extends Component {
                     <Field name="date" type="text" component={DateInput} placeholder="Date and Time" dateFormat="YYYY-MM-DD HH:mm" timeFormat='HH:mm' showTimeSelect />   
                     <Field typtestimonye="text" name="testi" component={TextArea}  placeholder="Tell us your testimony"/>
                     
-                      <Button disabled={invalid || submitting || pristine} color="red" type="submit"> Submit </Button>
+                      <Button disabled={invalid || submitting || pristine} color="teal" type="submit"> Submit </Button>
                       <Button onClick={this.props.history.goBack} type="button">Cancel</Button>
+
+                      {testimony.id &&
+                      <Button onClick={this.handleDeleteEvent(testimony.id)} floated='right' color="red" type="button"> Delete </Button>}
+                    
+                     
                   </Form>
+                  
+                    
                 </Segment>
             </Grid.Column>
           </Grid>

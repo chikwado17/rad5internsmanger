@@ -18,7 +18,7 @@ const eventImageTextStyle = {
 };
 
 
-const TestimonyDetailedHeader = ({ testimony }) => {
+const TestimonyDetailedHeader = ({ testimony, isHost }) => {
 
  let testimonyDate;
   if(testimony.date) {
@@ -30,7 +30,7 @@ const TestimonyDetailedHeader = ({ testimony }) => {
        
    <Segment.Group>
    <Segment basic attached="top" style={{ padding: '0' }}>
-   <Image style={eventImageStyle} src="/assets/categoryImages/drinks.jpg" fluid />
+   <Image style={eventImageStyle} src="/assets/categoryImages/back.jpg" fluid />
 
      <Segment basic style={eventImageTextStyle}>
        <Item.Group>
@@ -53,10 +53,10 @@ const TestimonyDetailedHeader = ({ testimony }) => {
    </Segment>
 
    <Segment attached="bottom">
-    
+   {isHost &&
      <Button as={Link} to={`/manage/${testimony.id}`} color="red">
        Edit Testimony
-     </Button>
+     </Button>}
    </Segment>
  </Segment.Group>
     )

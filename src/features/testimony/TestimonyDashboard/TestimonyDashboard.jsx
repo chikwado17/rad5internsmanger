@@ -5,7 +5,7 @@ import { Grid, Loader } from 'semantic-ui-react';
 import TestimonyList from '../TestimonyList/TestimonyList';
 import TestimonyActivity from '../TestimonyActivity/TestimonyActivity';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
-import { getTestimonyDashboard } from '../testimonyActions';
+import { getTestimonyDashboard, deleteTestimony } from '../testimonyActions';
 
 
 
@@ -29,7 +29,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    getTestimonyDashboard
+    getTestimonyDashboard,
+    deleteTestimony
 }
 
 class TestimonyDashboard extends Component {
@@ -80,6 +81,15 @@ class TestimonyDashboard extends Component {
         this.setState({ contextRef })
     }
 
+    handleDeleteTestimony = (testimonyId) => () => {
+    
+  
+        this.props.deleteTestimony(testimonyId);
+   
+        this.props.history.push('/testimony');
+      }
+  
+  
 
     render() {
         const { loading, activities } = this.props;
@@ -95,6 +105,7 @@ class TestimonyDashboard extends Component {
                             loading={loading}
                             moreTestimonies={moreTestimonies}
                             getNextTestimony={this.getNextTestimony}
+                          
                         />
                    </div>
                 </Grid.Column>

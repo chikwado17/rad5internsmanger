@@ -9,7 +9,7 @@ import TestimonyDetailedInfo from './TestimonyDetailedInfo';
 import TestimonyDetailedChat from './TestimonyDetailedChat';
 import { addTestimonyComment } from '../testimonyActions';
 import { createDataTree, objectToArray } from '../../../app/common/utils/helpers';
-// import LoadingComponent from '../../../app/layout/LoadingComponent';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { openModal } from '../../modals/modalActions';
 
 
@@ -22,7 +22,7 @@ const mapStateToProps = (state, ownProps) => {
     }
   
     return {
-      requesting: state.firestore.status.resquesting,
+      requesting: state.firestore.status.requesting,
       testimony,
       loading: state.firebase.loading,
       auth: state.firebase.auth,
@@ -69,16 +69,15 @@ class TestimonyDetailedPage extends Component {
 
 
     render() { 
-        const {openModal, auth, testimony, testimonyChat, loading,  addTestimonyComment } = this.props;
+        const {openModal, auth, match, requesting, testimony, testimonyChat, loading,  addTestimonyComment } = this.props;
 
 
           //sorting event chat to have its own reply assigned to it
           const chatTree = !isEmpty(testimonyChat) && createDataTree(testimonyChat);
-  //         //for anonimouse users
           const authenticated = auth.isLoaded && !auth.isEmpty;
-  //         //for loading indicator
-          // const Loadingflag = requesting[`testimonies/${match.params.id}`];
-          // if (Loadingflag || this.state.initialLoading) return <LoadingComponent inverted={true} />
+          const isHost = testimony.hostUid === auth.uid;
+          const Loadingflag = requesting[`testimonies/${match.params.id}`];
+          if (Loadingflag || this.state.initialLoading) return <LoadingComponent inverted={true} />
 
 
         return (
@@ -87,6 +86,7 @@ class TestimonyDetailedPage extends Component {
                <TestimonyDetailedHeader
                loading={loading}
                 testimony={testimony} 
+                isHost={isHost} 
                 authenticated={authenticated}
                 openModal={openModal}
                 />   
@@ -109,5 +109,5 @@ class TestimonyDetailedPage extends Component {
 export default compose(
   withFirestore,
   connect(mapStateToProps, mapDispatchToProps),
-  firebaseConnect((props) => ([`testimony_chat/${props.match.params.id}`]))
+  firebaseConnect((props) => props.auth.isLoaded && !props.auth.isEmpty && ([`testimony_chat/${props.match.params.id}`]))
 )(TestimonyDetailedPage);

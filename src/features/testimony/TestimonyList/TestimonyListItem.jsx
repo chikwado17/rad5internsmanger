@@ -57,6 +57,7 @@ class TestimonyListItem extends Component {
                     <Divider horizontal><Icon name="edit" /> </Divider>
               
                   <Button as={Link} to={`/testimonies/${testimony.id}`} color="red" floated="right" content="View" />
+                 
                 </Segment>
               </Segment.Group>
         )

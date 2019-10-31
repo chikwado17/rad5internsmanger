@@ -30,7 +30,7 @@ const LoginForm = ({login, handleSubmit, error, socialLogin}) => {
           placeholder="password"
         />
         {error && <Label basic color="red">{error }</Label>}
-        <Button fluid size="large" color="blue">
+        <Button fluid size="large" color="facebook">
           Login
         </Button>
         <Divider horizontal>

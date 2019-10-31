@@ -4,7 +4,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 class TestimonyList extends Component {
     render() {
-        const { testimonies, onEditTestimony, deleteTestimony, getNextTestimony, loading, moreTestimonies } = this.props;
+        const { testimonies, getNextTestimony, loading, moreTestimonies } = this.props;
         return (
             <div>
             {testimonies && testimonies.length !== 0 && 
@@ -17,7 +17,7 @@ class TestimonyList extends Component {
 
                 {testimonies && testimonies.map((testimony) => (
                               /* passing events to EventListItem */        //from eventdashboard                      
-                    <TestimonyListItem key={testimony.id} testimony={testimony}  onEditTestimony={onEditTestimony} deleteTestimony={deleteTestimony}/>
+                    <TestimonyListItem key={testimony.id} testimony={testimony} />
                 ))}
                 </InfiniteScroll> 
             }

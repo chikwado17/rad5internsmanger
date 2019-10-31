@@ -32,10 +32,30 @@ export const createTestimony = (testimony) => {
     }
 };
 
-export const deleteTestimony = (testimonyId) => ({
-    type: 'DELETE_TESTIMONY',
-    testimonyId
-});
+// export const deleteTestimony = (testimonyId) => ({
+//     type: 'DELETE_TESTIMONY',
+//     testimonyId
+// });
+
+export const deleteTestimony = (testimonyId) => {
+    return async (dispatch, getState, {getFirestore}) => {
+        const firestore = firebase.firestore();
+  
+        try {
+ 
+            await firestore.collection('testimonies').doc(testimonyId).delete();
+            
+           
+            toastr.success('success', 'Testimony has been deleted');
+        
+        }catch(error){
+            
+            toastr.error('Oops!', "Unable to delete testimony");
+      
+        }
+    }
+};
+
 
 
 
@@ -53,7 +73,7 @@ export const updateTestimony = (testimony) => {
           
        }catch(error){
         
-            toastr.errofirebase("Opps!!!", "Error occured updating testimony");
+            toastr.error("Opps!!!", "Error occured updating testimony");
         }
    }
 }

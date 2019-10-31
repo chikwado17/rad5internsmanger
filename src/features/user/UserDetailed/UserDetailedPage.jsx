@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { toastr } from 'react-redux-toastr';
 import { firestoreConnect, isEmpty } from 'react-redux-firebase';
 import { UserDetailedQueries } from '../userDetailedQueries';
 import {  Grid, Header, Icon, Image, Item, List, Segment} from "semantic-ui-react";
@@ -39,12 +40,21 @@ const mapStateToProps = (state, ownProps) => {
 
 class UserDetailedPage extends Component {
 
+
+    async componentDidMount() {
+        let user = await this.props.firestore.get(`users/${this.props.match.params.id}`);
+        if(!user.exists) {
+            toastr.error('Not Found', 'This is not the user you are looking for');
+            this.props.history.push('/error');
+        }
+    }
+
     render() {
 
-        const { profile, photos, requesting } = this.props;
+        const { profile, photos, requesting, match } = this.props;
 
 
-        const loading = Object.values(requesting).some(a => a === true);
+        const loading = requesting[`users/${match.params.id}`]
         if (loading) return <LoadingComponent inverted={true} />;
 
 
